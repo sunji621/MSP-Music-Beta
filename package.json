@@ -18,6 +18,7 @@
   "build": {
     "appId": "com.mspmusic.player.beta",
     "productName": "MSPMusic Beta",
+    "electronDist": "node_modules/electron/dist",
     "directories": {
       "output": "release-new"
     },

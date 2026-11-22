@@ -1,3 +1,5 @@
 node_modules/
 *.log
 index.ui-shell-backup.html
+bin/
+release-new/

@@ -128,6 +128,8 @@ npm run dist       # 生成安装包
 
 打包配置在 `package.json` 的 `build` 字段；`db.js` 已加入 `files`。
 
+> 打包前请把 `mpv.exe` 放到 `bin/mpv/mpv.exe`（约 62 MB，未纳入 Git）。安装包生成在 `release-new/`；GitHub 下载慢时可设置 `ELECTRON_BUILDER_BINARIES_MIRROR=https://npmmirror.com/mirrors/electron-builder-binaries/`。
+
 ## 📚 完整文档
 
 详细使用教程、架构、局域网协议、DSP、调试与发版流程见：
