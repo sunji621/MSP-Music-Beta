@@ -3255,12 +3255,7 @@
       <aside id="sidebar">
         <div id="sidebar-header">
           <div class="sb-brand">
-            <span class="sb-logo">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
-              </svg>
-            </span>
-            <h1>MSP</h1>
+            <h1 class="sb-beta">BETA</h1>
           </div>
           <button class="sb-collapse-btn" id="sb-collapse" title="收起侧栏" type="button">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -6337,29 +6332,62 @@
         deckState.auto = auto;
       }
 
-      function render() {
+      function cardElFor(itemIndex) {
+        return stage.querySelector(`.csw-card[data-deck-item="${itemIndex}"]`);
+      }
+
+      function paintInfo() {
+        const current = items[order[0]];
+        if (!current) return;
+        if (titleEl) titleEl.textContent = current.title;
+        if (subEl) subEl.textContent = `${current.artist} · ${current.album || '未知专辑'} · ${current.duration}`;
+        if (countEl) countEl.textContent = String(order[0] + 1).padStart(2, '0');
+      }
+
+      function layout(keepAbove) {
         remember();
-        stage.innerHTML = order.map((itemIndex, pos) => {
-          const item = items[itemIndex];
+        order.forEach((itemIndex, pos) => {
+          const card = cardElFor(itemIndex);
+          if (!card) return;
+          card.style.setProperty('--t', deckTransform(pos));
+          card.dataset.front = pos === 0 ? '1' : '0';
+          card.style.zIndex = String(card === keepAbove ? 60 : order.length - pos);
+          card.style.transitionDelay = '';
+        });
+        paintInfo();
+      }
+
+      function build() {
+        stage.innerHTML = items.map((item, itemIndex) => {
+          const pos = order.indexOf(itemIndex);
           const cover = item.cover
             ? `<img src="${item.cover}" alt="">`
             : `<span class="csw-fallback" style="--h:${(itemIndex * 67 + 10) % 360}"></span>`;
-          return `<div class="csw-card" data-deck-pos="${pos}" data-deck-item="${itemIndex}"
+          return `<div class="csw-card" data-deck-item="${itemIndex}"
             data-front="${pos === 0 ? '1' : '0'}"
             style="--t:${deckTransform(pos)};z-index:${order.length - pos}">
             ${cover}<span class="csw-tag">${escapeHtml(item.title)}</span></div>`;
         }).join('');
-        const current = items[order[0]];
-        if (current) {
-          if (titleEl) titleEl.textContent = current.title;
-          if (subEl) subEl.textContent = `${current.artist} · ${current.album || '未知专辑'} · ${current.duration}`;
-          if (countEl) countEl.textContent = String(order[0] + 1).padStart(2, '0');
-        }
       }
 
-      function swap() {
+      let swapTimer = null;
+      function swap(draggedCard) {
+        const outgoing = cardElFor(order[0]);
+        if (draggedCard) {
+          draggedCard.style.transition = '';
+          draggedCard.style.transform = '';
+        }
         order.push(order.shift());
-        render();
+        layout(outgoing);
+        stage.classList.add('is-swapping');
+        if (swapTimer) clearTimeout(swapTimer);
+        swapTimer = setTimeout(() => {
+          swapTimer = null;
+          stage.classList.remove('is-swapping');
+          if (!outgoing) return;
+          const pos = order.indexOf(Number(outgoing.dataset.deckItem));
+          if (pos >= 0) outgoing.style.zIndex = String(order.length - pos);
+        }, 330);
       }
 
       function setAuto(on) {
@@ -6394,9 +6422,10 @@
         const dist = Math.hypot(d.dx, d.dy);
         d.card.style.transition = '';
         if (dist > 58 || (dist < 6 && Date.now() - d.start < 420)) {
-          swap();
+          swap(d.card);
         } else {
-          render();
+          d.card.style.transform = '';
+          layout();
         }
       }
       stage.addEventListener('pointerup', endDrag);
@@ -6408,9 +6437,10 @@
         if (item) playSong(item.idx);
       });
       const nextBtn = $('deck-next');
-      if (nextBtn) nextBtn.addEventListener('click', swap);
+      if (nextBtn) nextBtn.addEventListener('click', () => swap());
       if (autoBtn) autoBtn.addEventListener('click', () => setAuto(!auto));
-      render();
+      build();
+      layout();
       setAuto(auto);
     }
 
