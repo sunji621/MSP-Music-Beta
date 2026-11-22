@@ -1,6 +1,6 @@
 # MSP Music 完整手册
 
-[🏠 返回主页](../README.md) | **当前版本：Beta (v26.9.16)**
+[🏠 返回主页](../README.md) | **当前版本：Beta (v26.11.22-Beta)**
 
 > 本手册是全部文档的**合并完整版**：使用教程 + 开发指南合为一篇，既适合普通用户查阅，也适合开发者按「想做什么效果 → 改哪个文件」的方式直接动手。
 
@@ -50,7 +50,7 @@ MSP Music 是一款以「**本地音乐**」为核心的播放器，有两个端
 
 | 端 | 技术 | 形态 |
 |---|---|---|
-| 电脑版 | Electron（Windows / Linux） | 桌面应用，侧边栏 + 主内容区 + 底部播放栏 |
+| 电脑版 | Electron（Windows / Linux） | 桌面应用，侧栏 + 主内容区 + 右侧队列 + 底部播放栏 |
 | 安卓版 | Java 外壳 + Media3 + 单个 WebView | APK，界面同样是 HTML，息屏可播、通知栏可控 |
 
 两端在同一 WiFi（局域网）下可以**互相访问对方的曲库**，用 6 位配对码授权，无需拷贝文件、无需注册账号。
@@ -63,6 +63,8 @@ MSP Music 是一款以「**本地音乐**」为核心的播放器，有两个端
 - 🌐 在线音源：网易云音乐、哔哩哔哩（电脑版还支持 QQ 音乐、B站 MV 模式）
 - 📱 横屏 / 竖屏自适应：横屏为「左舞台 + 右控制」布局，封面始终正方形
 - 🖼 自定义背景（图片 / 视频）、深色 / 浅色主题
+- 🖥 电脑版全新深色三栏 UI：BETA 侧栏、Hero、3D 封面卡堆、行内操作节点、右侧队列、全屏播放页
+- 🗄 电脑版 SQLite 曲库：扫描缓存跨重启复用，标签/歌词/分轨统一落库
 - 🔁 随机 / 顺序 / 单曲循环、倍速、AB 复读、断点记忆
 
 ---
@@ -201,6 +203,26 @@ MSP Music 是一款以「**本地音乐**」为核心的播放器，有两个端
 - 网易云 / QQ 音乐支持账号功能：扫码登录、网页登录、短信登录
 - 登录在平台官方页面完成，App 不接触账号密码
 - Cookie 只保存在本机，仅用于维持登录态，不上传第三方
+
+### 3.9 新版桌面 UI 与曲库数据库
+
+**界面**
+
+- 三栏布局：侧栏、主内容区、右侧播放队列
+- 侧栏「浏览 / 音乐库 / 工具」分组，顶部为 BETA 标识
+- 首页：每日推荐 Hero、最近添加、今晚的混音、曲库表格
+- 3D 封面卡堆：拖拽、甩出、点击换页、自动轮换
+- 歌曲行长悬浮展开操作节点：播放 / 收藏 / 专辑 / 更多
+- 收藏按钮带心形弹跳、粒子 bloom 与数字滚动
+- 深色 / 浅色两套主题，设置中即时切换
+
+**数据库**
+
+- SQLite 文件：`%APPDATA%\msp-music-beta\music-library.db`
+- `tracks` 保存曲目、CUE 分轨、标签、歌词、时长等
+- `scan_dirs` 保存目录 mtime 与扫描结果，重启时直接复用
+- 旧 JSON 元数据缓存命中后会回填数据库
+- 使用 sql.js（SQLite WebAssembly），无需原生编译
 
 ---
 
@@ -395,6 +417,7 @@ preload.js (桥，白名单 ipcRenderer.invoke)
    ▼
 main.js (主进程 ipcMain.handle)
    ├── 文件扫描 / music-metadata 标签
+   ├── db.js（SQLite 曲库 / 扫描缓存 / 元数据）
    ├── NeteaseAPI / QQAPI / BilibiliAPI
    ├── mpv-engine.js（外部 mpv.exe）
    └── lan-server.js（HTTP + UDP）
@@ -427,6 +450,19 @@ LanHostServer (手机作主机：HTTP + UDP)
 
 一套前端技能同时维护两端视觉；原生侧只做 HTML 做不了的事：音频解码输出、SAF 文件、后台服务、网络请求绕过跨域。
 
+### 7.4 曲库数据库（db.js）
+
+从 v26.11.22-Beta 开始，电脑版增加 SQLite 曲库层：
+
+- 引擎：`sql.js@1.13.0`（SQLite 编译为 WebAssembly，无原生模块/ABI 问题）
+- 文件：`%APPDATA%\msp-music-beta\music-library.db`
+- 初始化：`app.whenReady()` 中 `libraryDb.init(app.getPath('userData'))`
+- 扫描：`scanAudioFiles` 先查内存 → 再查 `scan_dirs` 缓存 → 都未命中才遍历目录；扫描完成后写 `scan_dirs` 与 `tracks`
+- 元数据：旧 JSON 缓存命中或新刮取完成时调用 `upsertMeta` 回填标题/歌手/专辑/时长/歌词
+- 保存：`db.export()` 写临时文件后 rename，1.2 秒防抖；退出前 `saveNow`/`close`
+- 表：`tracks`（曲目与 CUE 分轨）、`scan_dirs`（目录缓存）、`kv`（预留）
+- 调试：可用 DB Browser for SQLite 直接打开；不要在和 Electron 同时写入时强制改库
+
 ---
 
 ## 八、文件职责地图
@@ -435,8 +471,10 @@ LanHostServer (手机作主机：HTTP + UDP)
 
 | 文件 | 职责 | 何时动 |
 |---|---|---|
-| [index.html](../index.html) | 电脑版全部界面（CSS+HTML+JS 单文件） | 电脑端任何视觉/交互 |
+| [index.html](../index.html) | 电脑版页面结构、渲染层逻辑、原主题样式 | 电脑端结构/交互逻辑 |
+| [ui-shell.css](../ui-shell.css) | 新版 MSP 界面、深浅主题、卡堆与动效 | 电脑端视觉/动画 |
 | [main.js](../main.js) | 主进程：窗口、扫描、标签、在线 API、托盘、IPC | 文件读取、在线接口、系统行为 |
+| [db.js](../db.js) | SQLite 曲库：tracks / scan_dirs / 元数据 | 曲库持久化、扫描缓存 |
 | [preload.js](../preload.js) | 暴露 `window.electronAPI`（IPC 白名单） | 页面需要新主进程能力 |
 | [lan-server.js](../lan-server.js) | 电脑作主机：HTTP 15748 + UDP 15749 | 协议/配对/鉴权 |
 | [mpv-engine.js](../mpv-engine.js) | mpv 进程封装 | Bit-perfect 引擎 |
@@ -444,7 +482,7 @@ LanHostServer (手机作主机：HTTP + UDP)
 | [package.json](../package.json) | 依赖、版本、打包配置 | 版本号、加依赖 |
 | [打包命令.txt](../打包命令.txt) | 双端命令速查 | 忘记命令 |
 
-侧边栏导航项（index.html `#sidebar-nav`）：主页、播放列表、专辑、我的收藏、音频输出、调音台、刷新音乐库；footer 为设置。
+侧栏导航（index.html `#sidebar-nav`）：浏览（主页）/ 音乐库（播放列表、专辑、我的收藏）/ 工具（音频输出、调音台、刷新音乐库）；底部为本地模式状态卡与设置。
 
 ### 8.2 安卓工程 apk/project/
 
@@ -575,21 +613,22 @@ index.html
 | 改应用名/图标 | strings.xml `app_name`；mipmap 图标资源 |
 | 加新安卓权限 | AndroidManifest.xml（能不加就不加） |
 
-#### 10.5.1 发版必改的 4 处版本号（重要）
+#### 10.5.1 发版必改的 5 处版本号（重要）
 
-「关于」页里显示的版本号是**写死在页面里的**，不会自动跟随 package.json / build.gradle。所以发一次版，一共要改 **4 处**，漏改就会出现「安装包是新版、关于页还是旧版」：
+「关于」页里显示的版本号是**写死在页面里的**，不会自动跟随 package.json / build.gradle。所以发一次版，一共要改 **5 处**，漏改就会出现「安装包是新版、关于页还是旧版」：
 
 | # | 文件 | 改什么 | 影响范围 |
 |---|---|---|---|
-| 1 | [package.json](../package.json) | `"version": "26.9.16"` | 安装包文件名、系统识别版本 |
-| 2 | [index.html](../index.html)（设置 → 关于） | 搜对应版本号，改显示文本 | **电脑「关于」页显示的版本** |
-| 3 | [apk/project/app/build.gradle](../apk/project/app/build.gradle) | `versionCode` 每次 **+1**（整数，用于升级判断）+ `versionName '2.4.0'` | 安卓系统设置中的版本、能否覆盖升级 |
-| 4 | [mobile.html](../apk/project/app/src/main/assets/www/mobile.html)（设置 → 关于） | 搜 `v2.4.0`，改显示文本 | **安卓「关于」页显示的版本**，改完需重新构建 APK |
+| 1 | [package.json](../package.json) | `"version": "26.11.22-Beta"` | 安装包文件名、系统识别版本 |
+| 2 | [package-lock.json](../package-lock.json) | 根包版本、依赖锁文件 | 保证 CI/安装一致 |
+| 3 | [index.html](../index.html)（标题栏 + 设置 → 关于） | 搜 `26.11.22-Beta`，共 3 处 | **电脑标题栏/「关于」页显示的版本** |
+| 4 | [apk/project/app/build.gradle](../apk/project/app/build.gradle) | `versionCode` 每次 **+1** + `versionName '2.4.0'` | 安卓系统设置中的版本、能否覆盖升级 |
+| 5 | [mobile.html](../apk/project/app/src/main/assets/www/mobile.html)（设置 → 关于） | 搜 `v2.4.0`，改显示文本 | **安卓「关于」页显示的版本**，改完需重新构建 APK |
 
 注意事项：
 
-- 第 2 处目前是四段式 `v26.9.16.1`，与 package.json 的三段式不一致——这是历史遗留，改的时候按你自己的命名规则统一即可，两处不强制相同。
-- 安卓 JS 侧**没有**读取 `versionName` 的接口（MSBridge 未暴露），所以第 4 处无法自动同步，只能手改。
+- 电脑端 index.html 目前 3 处版本文本要保持一致：注释、标题栏、设置「关于」。
+- 安卓 JS 侧**没有**读取 `versionName` 的接口（MSBridge 未暴露），所以第 5 处无法自动同步，只能手改。
 - 交付的 APK 文件名（如 `apk\MSPMusic-a-m10-*.apk`）里的版本标识也是手动命名，别忘了和 build.gradle 对齐。
 
 ### 10.6 改代码最小流程（手机端举例）
@@ -777,12 +816,17 @@ node -e "const fs=require('fs');const h=fs.readFileSync('./apk/project/app/src/m
 
 `msp_lan_host`：配对码、已配对电脑、host 服务状态。
 
-### 15.3 电脑 userData（`%APPDATA%\MSPMusic`）
+### 15.3 电脑 userData（`%APPDATA%\msp-music-beta`）
 
 | 文件 | 内容 |
 |---|---|
+| music-library.db | SQLite 曲库：tracks / scan_dirs / 元数据 |
+| accounts.json | 网易云 / QQ 等账号与 Cookie |
+| meta-cache/shard-*.json | 旧版元数据分片缓存（命中后回填 SQLite） |
+| tray-prefs.json | 关闭到托盘偏好 |
 | lan-config.json | 共享配置（含配对码） |
 | lan-paired.json | 已配对设备/token |
+| backgrounds/ | 自定义背景图片/视频 |
 
 localStorage 键：`msp_lan_peer_tokens`（电脑连手机的 token）。
 
@@ -795,11 +839,12 @@ localStorage 键：`msp_lan_peer_tokens`（电脑连手机的 token）。
 
 两端共用一套视觉语言，改样式请遵守，保证手感统一。
 
-- **主色**：低饱和靛蓝（强调色），语义色：网易云红 `#e03a3e`、B站粉 `#fb7299`
-- **缓动**：统一 `cubic-bezier(.2, 0, .2, 1)`
-- **时长**：小元素（按钮/chip）120–160ms；大面板/全屏切换 180–220ms
-- **只动 `transform` / `opacity`**（不触发重排）；不做弹簧动画
-- 圆角、间距、毛玻璃强度走 CSS 变量，不要散落硬编码
+- **主色**：近黑内容底 + 奶油白文字 + 酸橙绿 `#d7ff3f` 强调；浅色主题为暖纸底 + 橄榄绿
+- **缓动**：卡堆 `--ease-swap: cubic-bezier(.25,.8,.3,1)`；交互弹簧 `--ease-spring`
+- **时长**：卡堆换位 540ms；面板/队列 180–260ms；微交互 120–180ms
+- **只动 `transform` / `opacity`**；卡堆用持久 DOM + CSS transition，禁止重建节点导致动画丢失
+- 圆角、间距、主题色走 CSS 变量；深/浅两套都要验收
+- 电脑版标题字体使用系统 sans；卡堆标签/封面文字除外
 - 深色/浅色两套色板都要验证；自定义背景下所有层级都有底色兜底
 - 安全区：所有贴边布局使用 `env(safe-area-inset-*)`
 
@@ -889,7 +934,7 @@ localStorage 键：`msp_lan_peer_tokens`（电脑连手机的 token）。
 | DSP | 数字信号处理（均衡/混响等） |
 | DASH | B站音视频分离的流式格式 |
 | token | 配对后颁发的访问凭证 |
-| userData | Electron 应用数据目录（`%APPDATA%\MSPMusic`） |
+| userData | Electron 应用数据目录（`%APPDATA%\msp-music-beta`） |
 
 ---
 
@@ -908,7 +953,7 @@ localStorage 键：`msp_lan_peer_tokens`（电脑连手机的 token）。
 - 欢迎提交 Issue 和 Pull Request，或者 Fork 后进行个人定制。
 - 当前项目处于 Beta 测试阶段，欢迎体验并反馈问题。
 
-*— 本手册基于电脑版 v26.9.16 / 安卓版 v2.4.0 实际代码编写，如代码更新请同步修订。*
+*— 本手册基于电脑版 v26.11.22-Beta / 安卓版 v2.4.0 实际代码编写，如代码更新请同步修订。*
 
 
 
