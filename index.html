@@ -2710,7 +2710,7 @@
     }
 
     /* ═══════════════════════════════════════════════════════════
-       v26.9.13.1 极简重设计收口层（置于最后，统一覆盖旧视觉）
+       v26.11.9-Beta 极简重设计收口层（置于最后，统一覆盖旧视觉）
        语言：12px 柔和圆角 · 冷调中性面 · 低饱和靛蓝点缀
              毛玻璃浮层 · 轻阴影 · hover 轻上浮 · 柔和按压
        ═══════════════════════════════════════════════════════════ */
@@ -3216,8 +3216,9 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="ui-shell.css">
 </head>
-<body>
+<body class="ui-shell">
   <!-- 自定义背景层（固定于所有内容之下） -->
   <video id="app-bg-video" muted loop playsinline disablepictureinpicture></video>
   <div id="app-bg"></div>
@@ -3232,7 +3233,7 @@
             </svg>
           </span>
           <span class="titlebar-name">MSP <span class="titlebar-name-light">Music</span></span>
-          <span class="titlebar-ver">v26.9.16</span>
+          <span class="titlebar-ver">26.11.9-Beta</span>
         </div>
       </div>
       <div class="titlebar-controls">
@@ -3269,6 +3270,7 @@
         </div>
         <nav id="sidebar-nav">
           <div id="nav-indicator"></div>
+          <div class="ui-nav-label">浏览</div>
           <button class="btn-folder nav-btn" id="nav-home" title="主页">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
@@ -3294,6 +3296,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             <span class="nav-text">我的收藏</span>
           </button>
+          <div class="ui-nav-label">工具</div>
           <button class="btn-folder nav-btn" id="nav-audio" title="音频输出">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M11 5L6 9H2v6h4l5 4V5z"/>
@@ -3320,6 +3323,13 @@
             <span class="nav-text">刷新音乐库</span>
           </button>
         </nav>
+        <div class="ui-side-status" aria-hidden="true">
+          <span class="ui-side-status__dot"></span>
+          <span class="ui-side-status__text">
+            <span class="ui-side-status__title">本地模式</span>
+            <span class="ui-side-status__sub">未连接音乐平台</span>
+          </span>
+        </div>
         <div id="sidebar-footer">
           <button class="btn-folder nav-btn" id="settings-btn" title="设置">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -4229,7 +4239,7 @@
           <div class="sub-page" id="sub-about" style="display: none;">
             <div class="settings-card">
               <div style="font-size: 13px; color: var(--text-3); line-height: 1.8;">
-                <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px;">MSP Music <span style="font-size:12px;font-weight:500;color:var(--text-muted);">v26.9.16</span></div>
+                <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px;">MSP Music <span style="font-size:12px;font-weight:500;color:var(--text-muted);">26.11.9-Beta</span></div>
                 <div>基于 Electron + music-metadata 构建</div>
                 <div>数据来源: QQ音乐 · 网易云 · MusicBrainz · LRCLIB</div>
               </div>
