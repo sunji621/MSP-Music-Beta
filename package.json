@@ -27,6 +27,7 @@
       "login-preload.js",
       "lan-server.js",
       "index.html",
+      "ui-shell.css",
       "mpv-engine.js",
       "default_cover.png",
       "db.js"
