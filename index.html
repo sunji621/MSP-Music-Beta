@@ -3260,7 +3260,7 @@
                 <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
               </svg>
             </span>
-            <h1>MSP Music</h1>
+            <h1>MSP</h1>
           </div>
           <button class="sb-collapse-btn" id="sb-collapse" title="收起侧栏" type="button">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -3278,21 +3278,22 @@
             </svg>
             <span class="nav-text">主页</span>
           </button>
-          <button class="btn-folder nav-btn" id="nav-playlist" title="播放列表">
+          <div class="ui-nav-label">音乐库</div>
+          <button class="btn-folder nav-btn ui-nav-child" id="nav-playlist" title="播放列表">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>
               <circle cx="3.5" cy="6" r="1.5"/><circle cx="3.5" cy="12" r="1.5"/><circle cx="3.5" cy="18" r="1.5"/>
             </svg>
             <span class="nav-text">播放列表</span>
           </button>
-          <button class="btn-folder nav-btn" id="nav-album" title="专辑">
+          <button class="btn-folder nav-btn ui-nav-child" id="nav-album" title="专辑">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"/>
               <circle cx="12" cy="12" r="3"/>
             </svg>
             <span class="nav-text">专辑</span>
           </button>
-          <button class="btn-folder nav-btn" id="nav-favorites" title="我的收藏">
+          <button class="btn-folder nav-btn ui-nav-child" id="nav-favorites" title="我的收藏">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             <span class="nav-text">我的收藏</span>
           </button>
@@ -3341,18 +3342,33 @@
         </div>
       </aside>
 
+      <header id="topbar">
+        <div class="topbar-crumb"><span>资料库</span><span class="topbar-sep">/</span><span class="topbar-here">概览</span></div>
+        <div id="home-search-bar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input id="home-search-input" type="text" placeholder="搜索歌曲、专辑或艺术家" autocomplete="off">
+          <div id="home-suggestions" class="search-suggest"></div>
+        </div>
+        <div class="topbar-actions">
+          <button class="topbar-icon topbar-menu" id="topbar-menu-btn" type="button" title="菜单" aria-label="菜单">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+          </button>
+          <span class="topbar-beta">BETA</span>
+          <button class="topbar-icon" id="topbar-queue-btn" type="button" title="播放队列" aria-label="播放队列">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3.5" cy="6" r="1.4"/><circle cx="3.5" cy="12" r="1.4"/><circle cx="3.5" cy="18" r="1.4"/></svg>
+          </button>
+          <button class="topbar-icon" id="topbar-settings-btn" type="button" title="设置" aria-label="设置">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </button>
+          <span class="topbar-avatar">M</span>
+        </div>
+      </header>
+
       <!-- 主页视图 -->
       <main id="home-view">
         <div class="view-scroll">
-          <div id="home-search-bar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-            </svg>
-            <input id="home-search-input" type="text" placeholder="搜索歌曲、歌手..." autocomplete="off">
-            <!-- 输入时的搜索建议下拉 -->
-            <div id="home-suggestions" class="search-suggest"></div>
-          </div>
-
           <div id="home-content">
             <div class="home-empty">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -4275,6 +4291,23 @@
           </div><!-- /settings-detail -->
         </div><!-- /settings-layout -->
       </main>
+
+      <aside id="queue-panel">
+        <header class="queue-head">
+          <div>
+            <div class="queue-kicker">MSP SESSIONS</div>
+            <h2>播放队列</h2>
+          </div>
+          <button class="queue-close" id="queue-close" type="button" title="收起队列" aria-label="收起队列">×</button>
+        </header>
+        <div class="queue-tabs" role="tablist">
+          <button class="queue-tab is-active" id="queue-tab-queue" data-queue-tab="queue" type="button" role="tab">队列 <span id="queue-count">0</span></button>
+          <button class="queue-tab" id="queue-tab-lyrics" data-queue-tab="lyrics" type="button" role="tab">歌词</button>
+        </div>
+        <div class="queue-list" id="queue-list"></div>
+        <div class="queue-lyrics" id="queue-lyrics" hidden></div>
+        <footer class="queue-foot"><span>自动播放</span><span id="queue-auto">0 首</span></footer>
+      </aside>
     </div>
 
     <!-- 刮取进度圆圈（右上角悬浮，点击查看详情） -->
@@ -6160,6 +6193,227 @@
       return playlistData[index];
     }
 
+    // ── 右侧队列面板 ──
+    let queueTab = 'queue';
+    function renderQueuePanel() {
+      const list = $('queue-list');
+      const lyrics = $('queue-lyrics');
+      if (!list || !lyrics) return;
+      const count = $('queue-count');
+      const auto = $('queue-auto');
+      if (count) count.textContent = String(playlistData.length);
+      if (auto) auto.textContent = `${playlistData.length} 首`;
+      list.hidden = queueTab !== 'queue';
+      lyrics.hidden = queueTab !== 'lyrics';
+      if (queueTab === 'lyrics') {
+        if (!lyricsData.length) {
+          lyrics.innerHTML = '<div class="queue-empty">暂无歌词</div>';
+        } else {
+          lyrics.innerHTML = lyricsData.slice(0, 18).map((line) =>
+            `<div class="queue-lyric${line.time <= (audio && audio.currentTime || 0) ? ' is-past' : ''}">${escapeHtml(line.text || '')}</div>`
+          ).join('');
+        }
+        return;
+      }
+      if (!playlistData.length) {
+        list.innerHTML = '<div class="queue-empty">队列还是空的</div>';
+        return;
+      }
+      list.innerHTML = playlistData.slice(0, 9).map((it, i) => {
+        const idx = playlistData.indexOf(it);
+        const title = (it.meta && it.meta.title) || it.name || '未知歌曲';
+        const artist = (it.meta && it.meta.artist) || '未知歌手';
+        const dur = formatDuration((it.meta && it.meta.duration) || it.duration || 0);
+        const cover = coverUrlOf(it);
+        const art = cover
+          ? `<span class="q-row__art"><img src="${cover}" alt=""></span>`
+          : `<span class="q-row__art q-row__art--fallback" style="--h:${(i * 47 + 8) % 360}"></span>`;
+        return `<button class="q-row${idx === currentIndex ? ' is-current' : ''}" data-queue-index="${idx}" type="button">
+          <span class="q-row__no">${idx === currentIndex ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>' : String(i + 1).padStart(2, '0')}</span>
+          ${art}
+          <span class="q-row__names"><span class="q-row__title">${escapeHtml(title)}</span><span class="q-row__artist">${escapeHtml(artist)}</span></span>
+          <span class="q-row__dur">${dur}</span>
+        </button>`;
+      }).join('');
+      list.querySelectorAll('[data-queue-index]').forEach((row) => {
+        row.addEventListener('click', () => {
+          const idx = Number(row.dataset.queueIndex);
+          if (Number.isFinite(idx)) playSong(idx);
+        });
+      });
+    }
+
+    function setQueueTab(tab) {
+      queueTab = tab === 'lyrics' ? 'lyrics' : 'queue';
+      document.querySelectorAll('[data-queue-tab]').forEach((b) => {
+        b.classList.toggle('is-active', b.dataset.queueTab === queueTab);
+      });
+      renderQueuePanel();
+    }
+
+
+
+    // ── 行内长悬浮操作节点 / 收藏粒子 ──
+    let rowMenuTimer = null;
+    let rowMenuOpen = null;
+    function closeRowMenu() {
+      clearTimeout(rowMenuTimer);
+      rowMenuTimer = null;
+      if (rowMenuOpen) {
+        rowMenuOpen.classList.remove('is-action-open');
+        rowMenuOpen.setAttribute('aria-expanded', 'false');
+        const node = rowMenuOpen.querySelector('.track-row__node');
+        if (node) node.setAttribute('aria-hidden', 'true');
+        rowMenuOpen = null;
+      }
+    }
+    function openRowMenu(row) {
+      if (!row || row === rowMenuOpen) return;
+      closeRowMenu();
+      rowMenuOpen = row;
+      row.classList.add('is-action-open');
+      row.setAttribute('aria-expanded', 'true');
+      const node = row.querySelector('.track-row__node');
+      if (node) node.setAttribute('aria-hidden', 'false');
+    }
+    function burstLikeAt(el) {
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      const burst = document.createElement('span');
+      burst.className = 'like-burst';
+      burst.style.left = x + 'px';
+      burst.style.top = y + 'px';
+      for (let i = 0; i < 12; i++) {
+        const dot = document.createElement('i');
+        const angle = (Math.PI * 2 * i) / 12 + Math.random() * .25;
+        const dist = 24 + Math.random() * 26;
+        dot.style.setProperty('--tx', `${Math.cos(angle) * dist}px`);
+        dot.style.setProperty('--ty', `${Math.sin(angle) * dist}px`);
+        dot.style.setProperty('--i', String(i));
+        burst.appendChild(dot);
+      }
+      document.body.appendChild(burst);
+      el.classList.remove('like-pop');
+      void el.offsetWidth;
+      el.classList.add('like-pop');
+      setTimeout(() => burst.remove(), 760);
+    }
+    function likeAlbumKeyOf(item) {
+      if (!item) return null;
+      const g = groupAlbums().find(group => group.items.some(({ item: it }) => it === item));
+      return g ? g.key : null;
+    }
+
+    // ── 3D 封面卡堆 ──
+    let deckTimer = null;
+    let deckState = { ids: '', order: [], auto: false };
+    function deckTransform(i) {
+      return `translate3d(${i * 32}px, ${-i * 24}px, ${-i * 64}px) skewY(6deg)`;
+    }
+    function initCardDeck(items) {
+      if (deckTimer) { clearInterval(deckTimer); deckTimer = null; }
+      const stage = $('deck-stage');
+      if (!stage || !items.length) return;
+      const titleEl = $('deck-title');
+      const subEl = $('deck-sub');
+      const countEl = $('deck-index');
+      const autoBtn = $('deck-auto');
+      const ids = items.map(i => i.idx).join(',');
+      let order = items.map((_, i) => i);
+      if (deckState.ids === ids && deckState.order.length === items.length) {
+        const restored = deckState.order
+          .map(id => items.findIndex(it => it.idx === id))
+          .filter(i => i >= 0);
+        if (restored.length === items.length) order = restored;
+      }
+      let auto = deckState.auto;
+      let drag = null;
+
+      function remember() {
+        deckState.ids = ids;
+        deckState.order = order.map(i => items[i].idx);
+        deckState.auto = auto;
+      }
+
+      function render() {
+        remember();
+        stage.innerHTML = order.map((itemIndex, pos) => {
+          const item = items[itemIndex];
+          const cover = item.cover
+            ? `<img src="${item.cover}" alt="">`
+            : `<span class="csw-fallback" style="--h:${(itemIndex * 67 + 10) % 360}"></span>`;
+          return `<div class="csw-card" data-deck-pos="${pos}" data-deck-item="${itemIndex}"
+            data-front="${pos === 0 ? '1' : '0'}"
+            style="--t:${deckTransform(pos)};z-index:${order.length - pos}">
+            ${cover}<span class="csw-tag">${escapeHtml(item.title)}</span></div>`;
+        }).join('');
+        const current = items[order[0]];
+        if (current) {
+          if (titleEl) titleEl.textContent = current.title;
+          if (subEl) subEl.textContent = `${current.artist} · ${current.album || '未知专辑'} · ${current.duration}`;
+          if (countEl) countEl.textContent = String(order[0] + 1).padStart(2, '0');
+        }
+      }
+
+      function swap() {
+        order.push(order.shift());
+        render();
+      }
+
+      function setAuto(on) {
+        auto = on;
+        if (autoBtn) {
+          autoBtn.classList.toggle('is-on', auto);
+          autoBtn.textContent = auto ? '自动换位中' : '自动换位';
+        }
+        if (deckTimer) { clearInterval(deckTimer); deckTimer = null; }
+        if (auto) deckTimer = setInterval(() => { if (!drag) swap(); }, 4000);
+        deckState.auto = auto;
+      }
+
+      stage.addEventListener('pointerdown', (e) => {
+        const card = e.target.closest('.csw-card[data-front="1"]');
+        if (!card) return;
+        drag = { card, x: e.clientX, y: e.clientY, dx: 0, dy: 0, start: Date.now() };
+        card.setPointerCapture(e.pointerId);
+        card.style.transition = 'none';
+      });
+      stage.addEventListener('pointermove', (e) => {
+        if (!drag) return;
+        drag.dx = e.clientX - drag.x;
+        drag.dy = e.clientY - drag.y;
+        const nx = 140 * Math.tanh(drag.dx / 140);
+        drag.card.style.transform = `${deckTransform(0)} translate(${nx}px, ${drag.dy}px) rotate(${nx * 0.05}deg)`;
+      });
+      function endDrag() {
+        if (!drag) return;
+        const d = drag;
+        drag = null;
+        const dist = Math.hypot(d.dx, d.dy);
+        d.card.style.transition = '';
+        if (dist > 58 || (dist < 6 && Date.now() - d.start < 420)) {
+          swap();
+        } else {
+          render();
+        }
+      }
+      stage.addEventListener('pointerup', endDrag);
+      stage.addEventListener('pointercancel', endDrag);
+
+      const playBtn = $('deck-play');
+      if (playBtn) playBtn.addEventListener('click', () => {
+        const item = items[order[0]];
+        if (item) playSong(item.idx);
+      });
+      const nextBtn = $('deck-next');
+      if (nextBtn) nextBtn.addEventListener('click', swap);
+      if (autoBtn) autoBtn.addEventListener('click', () => setAuto(!auto));
+      render();
+      setAuto(auto);
+    }
+
     function renderHome() {
       const homeContent = $('home-content');
       if (playlistData.length === 0) {
@@ -6170,71 +6424,100 @@
               <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
             </svg>
             <p>选择音乐文件夹，发现你的音乐</p>
+            <span>在设置中添加一个本地音乐文件夹</span>
           </div>`;
+        renderQueuePanel();
         return;
       }
+
       const picks = getHomePicks();
-      const albumCount = groupAlbums().length;
-      const recentValid = recentHistory.filter(i => i >= 0 && i < playlistData.length);
-      const favCount = favorites.size;
       const greeting = getGreeting();
       const daily = getDailyPick();
       const dailyIdx = daily ? playlistData.indexOf(daily) : -1;
-      // 继续播放：上次最后听的歌
-      const resumeIdx = recentValid.length > 0 ? recentValid[0] : -1;
-      const resumeItem = resumeIdx >= 0 ? playlistData[resumeIdx] : null;
-
-      // 封面/图标工具
+      const recentValid = recentHistory.filter(i => i >= 0 && i < playlistData.length);
+      const recentItems = (recentValid.length ? recentValid : playlistData.map((_, i) => i)).slice(0, 4);
+      const recentLabel = recentValid.length ? '最近播放' : '最近添加';
+      const recentKicker = recentValid.length ? '继续收听' : '刚刚入库';
+      const favCount = favorites.size;
+      const albumCount = groupAlbums().length;
       const noteSvg = '<img src="default_cover.png" alt="" class="default-cover">';
       const coverImgOf = (it) => { const u = coverUrlOf(it); return u ? `<img src="${u}" alt="">` : null; };
-      const firstCoverOf = (list) => { const u = firstCoverUrlOf(list); return u ? `<img src="${u}" alt="">` : null; };
-      const ICONS = {
-        note: noteSvg,
-        shuffle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>',
-        heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
-        disc: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>',
-        list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3.5" cy="6" r="1.5"/><circle cx="3.5" cy="12" r="1.5"/><circle cx="3.5" cy="18" r="1.5"/></svg>',
-        clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+      const fallbackNames = (it) => {
+        const base = String((it && it.name) || '').replace(/\.[^.]+$/, '').replace(/\s+/g, ' ').trim();
+        const parts = base.split(/\s+-\s+/);
+        if (parts.length >= 2) return { artist: parts[0].trim(), title: parts.slice(1).join(' - ').replace(/^\./, '').trim() };
+        return { artist: '', title: base.replace(/^\./, '').trim() };
+      };
+      const titleOf = (it) => (it.meta && it.meta.title) || fallbackNames(it).title || '未知歌曲';
+      const artistOf = (it) => (it.meta && it.meta.artist) || fallbackNames(it).artist || '未知歌手';
+      const albumOf = (it) => (it.meta && it.meta.album) || (it.cue ? (it.cueAlbum || '未知专辑') : '未知专辑');
+      const durationOf = (it) => formatDuration((it.meta && it.meta.duration) || it.duration || 0);
+      const requestMetaOnce = (items) => {
+        if (!window.__uiMetaRequested) window.__uiMetaRequested = new Set();
+        items.forEach((it) => {
+          if (!it || it.cue || !it.path || it.meta) return;
+          if (window.__uiMetaRequested.has(it.path)) return;
+          window.__uiMetaRequested.add(it.path);
+          window.electronAPI.requestSongInfo(it.path);
+        });
       };
 
-      // ── Hero 横幅：每日推荐 / 欢迎回来 ──
+      const artHTML = (it, idx) => {
+        const cover = coverImgOf(it);
+        return cover
+          ? `<span class="media-art">${cover}<span class="media-art__glow"></span></span>`
+          : `<span class="media-art media-art--fallback" style="--h:${(idx * 47 + 8) % 360}">${noteSvg}</span>`;
+      };
+
+      // ── Hero ──
+      requestMetaOnce([daily, ...playlistData.slice(0, 8)]);
+      const deckItems = playlistData.slice(0, 4).map((it) => ({
+        idx: playlistData.indexOf(it),
+        title: titleOf(it),
+        artist: artistOf(it),
+        album: albumOf(it),
+        duration: durationOf(it),
+        cover: coverUrlOf(it),
+      }));
       let heroHTML;
       if (daily) {
-        const dailyTitle = (daily.meta && daily.meta.title) || daily.name;
-        const dailyArtist = (daily.meta && daily.meta.artist) || '未知歌手';
+        const dailyTitle = titleOf(daily);
+        const dailyArtist = artistOf(daily);
+        const isLiked = favorites.has(songKey(daily));
         heroHTML = `
         <section class="home-hero">
-          <div class="hero-deco hero-deco-1"></div>
-          <div class="hero-deco hero-deco-2"></div>
-          <div class="hero-info">
+          <div class="hero-copy">
             <div class="hero-eyebrow"><span class="hero-dot"></span>${greeting.text} · 每日推荐</div>
             <h2 class="hero-title">${escapeHtml(dailyTitle)}</h2>
-            <div class="hero-artist">${escapeHtml(dailyArtist)} · ${escapeHtml(greeting.tip)}</div>
+            <p class="hero-sub">${escapeHtml(dailyArtist)} · ${escapeHtml(albumOf(daily))} · ${durationOf(daily)}</p>
             <div class="hero-actions">
               <button class="hero-play-btn" id="hero-play-daily" type="button">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>播放今日推荐
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>播放
               </button>
-              ${resumeItem && resumeIdx !== dailyIdx ? `
+              <button class="hero-like-btn${isLiked ? ' is-liked' : ''}" id="hero-like-daily" type="button" aria-pressed="${isLiked}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                ${isLiked ? '已收藏' : '收藏'}
+              </button>
+              ${recentValid.length && recentValid[0] !== dailyIdx ? `
               <button class="hero-ghost-btn" id="hero-resume" type="button">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                <span>继续播放 · ${escapeHtml(resumeItem.meta && resumeItem.meta.title ? resumeItem.meta.title : resumeItem.name)}</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                继续播放
               </button>` : ''}
             </div>
           </div>
           <div class="hero-cover">${coverImgOf(daily) || noteSvg}</div>
+          <span class="hero-index">${String(dailyIdx + 1).padStart(2, '0')}</span>
         </section>`;
       } else {
         heroHTML = `
         <section class="home-hero">
-          <div class="hero-deco hero-deco-1"></div>
-          <div class="hero-deco hero-deco-2"></div>
-          <div class="hero-info">
+          <div class="hero-copy">
             <div class="hero-eyebrow"><span class="hero-dot"></span>${greeting.text}</div>
             <h2 class="hero-title">欢迎回来</h2>
-            <div class="hero-artist">曲库共 ${playlistData.length} 首歌曲 · ${escapeHtml(greeting.tip)}</div>
+            <p class="hero-sub">曲库共 ${playlistData.length} 首歌曲 · ${escapeHtml(greeting.tip)}</p>
             <div class="hero-actions">
               <button class="hero-play-btn" id="hero-shuffle" type="button">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>随机播放全部
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>随机播放
               </button>
             </div>
           </div>
@@ -6242,70 +6525,220 @@
         </section>`;
       }
 
-      // ── 快捷入口（封面缩略图取自曲库真实歌曲，无封面时显示渐变图标） ──
-      const favItems = playlistData.filter(it => favorites.has(songKey(it)));
-      const albumGroups = groupAlbums();
-      const albumFirstItems = albumGroups.length ? albumGroups[0].items.map(x => x.item) : [];
-      const quickDefs = [
-        { id: 'quick-recommend', name: '为你推荐', sub: `${picks.length} 首精选好歌`, cover: firstCoverOf(picks), icon: ICONS.note },
-        { id: 'quick-shuffle', name: '随机播放', sub: `${playlistData.length} 首歌曲随心听`, cover: coverImgOf(daily) || firstCoverOf(playlistData), icon: ICONS.shuffle },
-        { id: 'quick-favorites', name: '我的收藏', sub: favCount ? `${favCount} 首心爱歌曲` : '收藏喜欢的音乐', cover: firstCoverOf(favItems), icon: ICONS.heart },
-        { id: 'quick-albums', name: '专辑', sub: `${albumCount} 张专辑`, cover: firstCoverOf(albumFirstItems), icon: ICONS.disc },
-        { id: 'quick-playlist', name: '播放列表', sub: `${playlistData.length} 首歌曲`, cover: firstCoverOf(playlistData), icon: ICONS.list },
-        { id: 'quick-recent', name: '最近播放', sub: recentValid.length ? `${recentValid.length} 首播放记录` : '还没有播放记录', cover: firstCoverOf(recentValid.map(i => playlistData[i])), icon: ICONS.clock },
+      // ── 最近 ──
+      const recentCards = recentItems.map((idx) => {
+        const it = playlistData[idx];
+        if (!it) return '';
+        return `
+        <button class="media-card" data-home-idx="${idx}" type="button">
+          <span class="media-card__art">${artHTML(it, idx)}
+            <span class="media-card__badge">${recentValid.length ? '已播放' : '新入库'}</span>
+            <span class="media-card__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+          </span>
+          <span class="media-card__title">${escapeHtml(titleOf(it))}</span>
+          <span class="media-card__sub">${escapeHtml(artistOf(it))} · ${(it.meta && it.meta.year) || '2026'}</span>
+        </button>`;
+      }).join('');
+
+      // ── 混音 ──
+      const mixDefs = [
+        { id: 'mix-recent', label: '最近播放', sub: recentValid.length ? `${recentValid.length} 首 · 继续收听` : '还没有播放记录', icon: 'clock', hue: 18 },
+        { id: 'mix-local', label: '本地曲库', sub: `${playlistData.length} 首 · ${favorites.size} 首收藏`, icon: 'disc', hue: 210 },
+        { id: 'mix-fav', label: '我的收藏', sub: `${favCount} 首心爱歌曲`, icon: 'heart', hue: 145 },
+        { id: 'mix-shuffle', label: '随机漫游', sub: '从曲库里随便挑一些', icon: 'shuffle', hue: 280 },
       ];
-      const quickHTML = `
-        <div class="home-quick-grid">
-          ${quickDefs.map((d, i) => `
-          <button class="home-quick" id="${d.id}" style="animation-delay:${i * 40}ms" type="button">
-            <span class="hq-cover">${d.cover || d.icon}</span>
-            <span class="hq-meta"><span class="hq-name">${d.name}</span><span class="hq-sub">${d.sub}</span></span>
-          </button>`).join('')}
+      const mixIcons = {
+        clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>',
+        disc: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>',
+        heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+        shuffle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>',
+      };
+      const mixHTML = mixDefs.map((m, i) => `
+        <button class="mix-card" id="${m.id}" type="button" style="--mix-h:${m.hue};--i:${i}">
+          <span class="mix-card__art">${mixIcons[m.icon]}</span>
+          <span class="mix-card__meta"><span class="mix-card__name">${m.label}</span><span class="mix-card__sub">${escapeHtml(m.sub)}</span></span>
+          <span class="mix-card__arrow">↗</span>
+        </button>`).join('');
+
+      // ── 曲库表 ──
+      const tableRows = playlistData.slice(0, 8).map((it, i) => {
+        const idx = playlistData.indexOf(it);
+        const liked = favorites.has(songKey(it));
+        return `
+        <div class="track-row${idx === currentIndex ? ' is-playing' : ''}" data-home-idx="${idx}" aria-haspopup="true" aria-expanded="false">
+          <span class="track-row__no">${String(i + 1).padStart(2, '0')}</span>
+          <span class="track-row__main">${artHTML(it, i)}<span class="track-row__names"><span class="track-row__title">${escapeHtml(titleOf(it))}</span><span class="track-row__artist">${escapeHtml(artistOf(it))}</span></span></span>
+          <span class="track-row__album">${escapeHtml(albumOf(it))}</span>
+          <span class="track-row__source">${it.online ? '云端' : '本地'}</span>
+          <span class="track-row__dur">${durationOf(it)}</span>
+          <button class="track-row__like${liked ? ' is-liked' : ''}" data-home-like="${idx}" type="button" aria-label="${liked ? '取消收藏' : '收藏'}">
+            <svg viewBox="0 0 24 24" fill="${liked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+          <span class="track-row__node" aria-hidden="true">
+            <button class="track-node__core" data-node-close type="button" aria-label="收起操作"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+            <button class="track-row__act" data-row-act="play" style="--x:-62px;--y:-28px;--i:0" type="button" aria-label="播放"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+            <button class="track-row__act" data-row-act="like" style="--x:-78px;--y:0;--i:1" type="button" aria-label="收藏"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+            <button class="track-row__act" data-row-act="album" style="--x:-62px;--y:28px;--i:2" type="button" aria-label="查看专辑"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/></svg></button>
+            <button class="track-row__act" data-row-act="more" style="--x:-28px;--y:44px;--i:3" type="button" aria-label="全部歌曲"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg></button>
+          </span>
+        </div>`;
+      }).join('');
+
+      homeContent.innerHTML = `
+        <div class="home-scroll">
+          ${heroHTML}
+          <section class="home-section section--swap">
+            <div class="section-head">
+              <div><div class="section-kicker">拖走一张 · 换下一张</div><h3>封面卡堆</h3></div>
+              <button class="auto-toggle" id="deck-auto" type="button">自动换位</button>
+            </div>
+            <div class="swap-deck">
+              <div class="swap-deck__copy">
+                <div class="swap-count"><strong id="deck-index">01</strong><span>/ ${String(deckItems.length).padStart(2, '0')}</span></div>
+                <h3 id="deck-title">—</h3>
+                <p id="deck-sub">—</p>
+                <div class="swap-actions">
+                  <button class="ui-pill-btn" id="deck-play" type="button">▶ 播放这张</button>
+                  <button class="ui-icon-btn" id="deck-next" type="button" aria-label="下一张">↻</button>
+                </div>
+              </div>
+              <div class="csw" id="card-deck"><div class="csw-stage" id="deck-stage"></div><span class="csw-shadow"></span></div>
+            </div>
+          </section>
+          <section class="home-section">
+            <div class="section-head">
+              <div><div class="section-kicker">${recentKicker}</div><h3>${recentLabel}</h3></div>
+              <button class="section-more" id="home-more-recent" type="button">查看全部 <span>→</span></button>
+            </div>
+            <div class="home-cards">${recentCards}</div>
+          </section>
+          <section class="home-section">
+            <div class="section-head">
+              <div><div class="section-kicker">为你生成</div><h3>今晚的混音</h3></div>
+              <button class="section-more" id="home-more-recommend" type="button">换个氛围 <span>→</span></button>
+            </div>
+            <div class="mix-grid">${mixHTML}</div>
+          </section>
+          <section class="home-section home-section--library">
+            <div class="section-head">
+              <div><div class="section-kicker">本地 · ${playlistData.length} 首</div><h3>曲库</h3></div>
+              <button class="section-more" id="home-more-library" type="button">全部歌曲 <span>→</span></button>
+            </div>
+            <div class="library-table">
+              <div class="track-head"><span>#</span><span>标题</span><span>专辑</span><span>来源</span><span>时长</span><span></span></div>
+              ${tableRows}
+            </div>
+          </section>
+          <div class="home-foot"><span>MSP Music · 本地曲库</span><span>所有音乐来自本地文件夹 · 真实播放</span></div>
         </div>`;
 
-      // ── 横向封面卡片墙：最近播放 + 为你推荐 ──
-      const railHTML = `
-        ${recentValid.length ? `
-        <section class="home-rail-section">
-          <div class="rail-head">
-            <h3>最近播放</h3>
-            <button class="rail-more" id="rail-more-recent" type="button">查看全部</button>
-          </div>
-          <div class="home-rail" id="rail-recent"></div>
-        </section>` : ''}
-        <section class="home-rail-section">
-          <div class="rail-head">
-            <h3>为你推荐</h3>
-            <button class="rail-more" id="rail-more-recommend" type="button">查看全部</button>
-          </div>
-          <div class="home-rail" id="rail-pick"></div>
-        </section>`;
-
-      homeContent.innerHTML = heroHTML + quickHTML + railHTML;
-
-      // 快捷入口事件
-      $('quick-recommend').addEventListener('click', showRecommendView);
-      $('quick-shuffle').addEventListener('click', shufflePlayAll);
-      $('quick-favorites').addEventListener('click', showFavoritesView);
-      $('quick-albums').addEventListener('click', showAlbumView);
-      $('quick-playlist').addEventListener('click', showPlaylistView);
-      $('quick-recent').addEventListener('click', showRecentView);
-      // Hero 按钮事件
+      // events
       const heroDailyBtn = $('hero-play-daily');
       if (heroDailyBtn && dailyIdx >= 0) heroDailyBtn.addEventListener('click', () => playSong(dailyIdx));
+      const heroLikeBtn = $('hero-like-daily');
+      if (heroLikeBtn && daily) heroLikeBtn.addEventListener('click', () => {
+        toggleFavorite(songKey(daily));
+        heroLikeBtn.classList.toggle('is-liked', favorites.has(songKey(daily)));
+        heroLikeBtn.setAttribute('aria-pressed', String(favorites.has(songKey(daily))));
+        heroLikeBtn.lastChild.textContent = favorites.has(songKey(daily)) ? ' 已收藏' : ' 收藏';
+        if (favorites.has(songKey(daily))) burstLikeAt(heroLikeBtn);
+      });
       const heroResumeBtn = $('hero-resume');
-      if (heroResumeBtn && resumeIdx >= 0) heroResumeBtn.addEventListener('click', () => playSong(resumeIdx));
+      if (heroResumeBtn && recentValid.length) heroResumeBtn.addEventListener('click', () => playSong(recentValid[0]));
       const heroShuffleBtn = $('hero-shuffle');
       if (heroShuffleBtn) heroShuffleBtn.addEventListener('click', shufflePlayAll);
-      // 卡片墙「查看全部」
-      const railMoreRecent = $('rail-more-recent');
-      if (railMoreRecent) railMoreRecent.addEventListener('click', showRecentView);
-      $('rail-more-recommend').addEventListener('click', showRecommendView);
-      // 填充卡片墙（用 DOM 构建以保留点击事件）
-      const railRecent = $('rail-recent');
-      if (railRecent) recentValid.slice(0, 10).forEach(idx => railRecent.appendChild(buildRecCard(playlistData[idx])));
-      const railPick = $('rail-pick');
-      picks.slice(0, 10).forEach(it => railPick.appendChild(buildRecCard(it)));
+
+      $('home-more-recent').addEventListener('click', showRecentView);
+      $('home-more-recommend').addEventListener('click', showRecommendView);
+      $('home-more-library').addEventListener('click', showPlaylistView);
+
+      $('mix-recent').addEventListener('click', showRecentView);
+      $('mix-local').addEventListener('click', showPlaylistView);
+      $('mix-fav').addEventListener('click', showFavoritesView);
+      $('mix-shuffle').addEventListener('click', shufflePlayAll);
+
+      homeContent.querySelectorAll('[data-home-idx]').forEach((row) => {
+        row.addEventListener('click', (e) => {
+          if (e.target.closest('[data-home-like]')) return;
+          const idx = Number(row.dataset.homeIdx);
+          if (Number.isFinite(idx)) playSong(idx);
+        });
+      });
+      homeContent.querySelectorAll('[data-home-like]').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const idx = Number(btn.dataset.homeLike);
+          const item = playlistData[idx];
+          if (!item) return;
+          toggleFavorite(songKey(item));
+          const liked = favorites.has(songKey(item));
+          btn.classList.toggle('is-liked', liked);
+          btn.setAttribute('aria-label', liked ? '取消收藏' : '收藏');
+          btn.querySelector('svg').setAttribute('fill', liked ? 'currentColor' : 'none');
+          if (liked) burstLikeAt(btn);
+        });
+      });
+
+      if (!homeContent.dataset.rowActionsBound) {
+        homeContent.dataset.rowActionsBound = '1';
+        homeContent.addEventListener('pointerover', (e) => {
+          if (e.pointerType === 'touch') return;
+          const row = e.target.closest('.track-row');
+          if (!row || e.target.closest('.track-row__node')) return;
+          if (rowMenuOpen === row) return;
+          clearTimeout(rowMenuTimer);
+          rowMenuTimer = setTimeout(() => openRowMenu(row), 620);
+        });
+        homeContent.addEventListener('pointerout', (e) => {
+          const row = e.target.closest('.track-row');
+          if (!row) return;
+          if (e.relatedTarget && row.contains(e.relatedTarget)) return;
+          if (rowMenuOpen === row) closeRowMenu();
+          clearTimeout(rowMenuTimer);
+        });
+        homeContent.addEventListener('click', (e) => {
+          const closeBtn = e.target.closest('[data-node-close]');
+          if (closeBtn) { e.preventDefault(); e.stopPropagation(); closeRowMenu(); return; }
+          const act = e.target.closest('[data-row-act]');
+          if (!act) return;
+          e.preventDefault(); e.stopPropagation();
+          const row = act.closest('.track-row');
+          const idx = Number(row && row.dataset.homeIdx);
+          const item = playlistData[idx];
+          if (!item) return;
+          const action = act.dataset.rowAct;
+          if (action === 'play') playSong(idx);
+          if (action === 'like') {
+            toggleFavorite(songKey(item));
+            const liked = favorites.has(songKey(item));
+            const likeBtn = row.querySelector('[data-home-like]');
+            if (likeBtn) {
+              likeBtn.classList.toggle('is-liked', liked);
+              likeBtn.setAttribute('aria-label', liked ? '取消收藏' : '收藏');
+              const svg = likeBtn.querySelector('svg');
+              if (svg) svg.setAttribute('fill', liked ? 'currentColor' : 'none');
+            }
+            if (liked) burstLikeAt(act);
+          }
+          if (action === 'album') {
+            const key = likeAlbumKeyOf(item);
+            if (key) { showAlbumView(); showAlbumDetail(key); }
+          }
+          if (action === 'more') showPlaylistView();
+          closeRowMenu();
+        });
+        homeContent.addEventListener('contextmenu', (e) => {
+          const row = e.target.closest('.track-row');
+          if (!row) return;
+          e.preventDefault();
+          openRowMenu(row);
+          const first = row.querySelector('.track-row__act');
+          if (first) first.focus();
+        });
+      }
+
+      initCardDeck(deckItems);
+      renderQueuePanel();
     }
 
     /** 为你推荐页 */
@@ -6888,6 +7321,7 @@
       resetAb();
       engineTime = cueStartOf(playlistData[index]);
       applyLocalItemUI(index, { switchView: false });
+      renderQueuePanel();
       // 再预载一首，保持连续无缝
       preloadNextIntoEngine();
     }
@@ -6913,6 +7347,7 @@
       }
       currentIndex = index;
       resetAb();
+      renderQueuePanel();
       const item = playlistData[index];
       const meta = item.meta;
       // 断点（CUE 轨时长可直接算出；普通轨先查记录中保存的时长）
@@ -9421,6 +9856,12 @@
           // 可见页面只做封面/标题增量更新（不重建 DOM，避免刮取时整页闪烁）；
           // 专辑页/最近页/收藏页等在切回该页时全量渲染即为最新数据
           refreshVisibleCovers();
+          if (homeView.style.display !== 'none') {
+            clearTimeout(window.__homeMetaTimer);
+            window.__homeMetaTimer = setTimeout(() => {
+              if (homeView.style.display !== 'none') renderHome();
+            }, 220);
+          }
           // 搜索建议下拉打开时同步候选文本（下拉本身轻量更新，不影响主页）
           if (homeView.style.display !== 'none' && homeSuggestions.classList.contains('show')) {
             fillSuggestions(homeSuggestions, homeSearchInput.value.trim());
@@ -10362,10 +10803,38 @@
       if (logUnsubscribe) logUnsubscribe();
     });
 
+    // 行菜单滚动/Esc 关闭
+    const homeScroller = document.querySelector('#home-view > .view-scroll');
+    if (homeScroller) homeScroller.addEventListener('scroll', closeRowMenu, { passive: true });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeRowMenu();
+    });
+
+    // ── 顶栏 / 队列面板交互 ──
+    const topbarSettingsBtn = $('topbar-settings-btn');
+    if (topbarSettingsBtn) topbarSettingsBtn.addEventListener('click', () => $('settings-btn').click());
+    const topbarQueueBtn = $('topbar-queue-btn');
+    if (topbarQueueBtn) topbarQueueBtn.addEventListener('click', () => {
+      if (window.innerWidth < 1161) document.body.classList.toggle('queue-open');
+      else document.body.classList.toggle('queue-closed');
+      renderQueuePanel();
+    });
+    const topbarMenuBtn = $('topbar-menu-btn');
+    if (topbarMenuBtn) topbarMenuBtn.addEventListener('click', () => document.body.classList.toggle('nav-open'));
+    const queueCloseBtn = $('queue-close');
+    if (queueCloseBtn) queueCloseBtn.addEventListener('click', () => {
+      if (window.innerWidth < 1161) document.body.classList.remove('queue-open');
+      else document.body.classList.add('queue-closed');
+    });
+    document.querySelectorAll('[data-queue-tab]').forEach((b) => {
+      b.addEventListener('click', () => setQueueTab(b.dataset.queueTab));
+    });
+
     // ── 初始化 ──
     updateModeBtn();
     updateVolume();
     renderPlaylist();
+    renderQueuePanel();
     updatePlayerBarVisibility();
     // 默认显示主页
     showHomeView();

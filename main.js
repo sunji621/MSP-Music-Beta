@@ -457,9 +457,9 @@ async function scanAudioFiles(dirPath, onProgress) {
   try {
     const rootStat = fs.statSync(dirPath);
     const cached = scanDirCache.get(dirPath);
-    if (cached && cached.mtime === rootStat.mtimeMs && cached.fileCount > 0) {
-      console.log(`[scanAudioFiles] 根目录 mtime 未变，跳过扫描: ${dirPath}`);
-      return [];
+    if (cached && cached.mtime === rootStat.mtimeMs && cached.fileCount > 0 && Array.isArray(cached.files)) {
+      console.log(`[scanAudioFiles] 根目录 mtime 未变，复用缓存: ${dirPath} (${cached.files.length} 首)`);
+      return cached.files;
     }
   } catch (err) { /* 根目录 stat 失败，继续正常扫描 */ }
 
@@ -505,7 +505,7 @@ async function scanAudioFiles(dirPath, onProgress) {
   // 更新增量扫描缓存
   try {
     const rootStat = fs.statSync(dirPath);
-    scanDirCache.set(dirPath, { mtime: rootStat.mtimeMs, fileCount: out.length });
+    scanDirCache.set(dirPath, { mtime: rootStat.mtimeMs, fileCount: out.length, files: out });
   } catch (err) { /* 忽略 */ }
 
   return out;
