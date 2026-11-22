@@ -17,6 +17,7 @@ const { spawn, spawnSync } = require('child_process');
 const mmRaw = require('music-metadata');
 const mpvEngine = require('./mpv-engine');
 const lanServer = require('./lan-server');
+const libraryDb = require('./db');
 
 // 防止登录页（QQ等）检测到自动化环境，须在 app ready 前设置
 app.commandLine.appendSwitch('disable-blink-features', 'AutomationControlled');
@@ -456,8 +457,11 @@ async function scanAudioFiles(dirPath, onProgress) {
   // 增量扫描：检查根目录 mtime，未变且缓存中有该目录的歌曲则跳过整棵子树
   try {
     const rootStat = fs.statSync(dirPath);
-    const cached = scanDirCache.get(dirPath);
+    let cached = scanDirCache.get(dirPath);
+    // 内存缓存未命中时，从 SQLite 读取上次扫描结果（跨重启生效）
+    if (!cached) cached = libraryDb.getScanDir(dirPath);
     if (cached && cached.mtime === rootStat.mtimeMs && cached.fileCount > 0 && Array.isArray(cached.files)) {
+      scanDirCache.set(dirPath, cached);
       console.log(`[scanAudioFiles] 根目录 mtime 未变，复用缓存: ${dirPath} (${cached.files.length} 首)`);
       return cached.files;
     }
@@ -502,10 +506,14 @@ async function scanAudioFiles(dirPath, onProgress) {
     else out.push({ path: fp, name: path.basename(fp), ext: path.extname(fp).toLowerCase() });
   }
 
-  // 更新增量扫描缓存
+  // 更新增量扫描缓存（内存 + SQLite）
   try {
     const rootStat = fs.statSync(dirPath);
-    scanDirCache.set(dirPath, { mtime: rootStat.mtimeMs, fileCount: out.length, files: out });
+    const cache = { mtime: rootStat.mtimeMs, fileCount: out.length, files: out };
+    scanDirCache.set(dirPath, cache);
+    libraryDb.setScanDir(dirPath, cache);
+    const saved = libraryDb.upsertFiles(out, dirPath);
+    if (saved) console.log(`[db] 曲库写入 ${saved} 首: ${dirPath}`);
   } catch (err) { /* 忽略 */ }
 
   return out;
@@ -2051,6 +2059,7 @@ function setCachedMeta(filePath, info) {
     };
     shard.dirty = true;
     scheduleSaveShard(shardId);
+    libraryDb.upsertMeta(filePath, info);
   } catch (err) { /* 文件不存在，跳过缓存 */ }
 }
 
@@ -2076,6 +2085,7 @@ function scheduleSaveShard(shardId) {
 // 退出前强制保存所有 dirty 分片
 app.on('before-quit', () => {
   isQuiting = true; // 确保托盘模式下 quit 不被 close 拦截
+  try { libraryDb.close(); } catch (err) { console.warn(`[db] 关闭失败: ${err.message}`); }
   mpvEngine.quit();  // 关停 mpv 引擎，释放独占设备
   hwVolume.stop();   // 关闭硬件音量控制进程
   for (const [shardId, shard] of metaShards) {
@@ -2139,6 +2149,8 @@ async function processMetaQueue() {
             info.lyrics = localLrc;
           }
           console.log(`[meta-cache] 命中: ${path.basename(filePath)}`);
+          // 旧版缓存只在 JSON 分片里，顺便回填 SQLite，后续查询可直接走数据库
+          libraryDb.upsertMeta(filePath, info);
         } else {
           info = await MusicMetaFetcher.getFullSongInfo(filePath);
           setCachedMeta(filePath, info);
@@ -3026,7 +3038,8 @@ if (!gotSingleLock) {
     showMainWindow();
   });
 
-  app.whenReady().then(() => {
+  app.whenReady().then(async () => {
+    await libraryDb.init(app.getPath('userData'));
     loadTrayPrefs();
 
     // 旧版 metadata-cache.json → 16 分片迁移（首次运行时执行）

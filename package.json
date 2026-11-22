@@ -1,6 +1,6 @@
 {
   "name": "msp-music-beta",
-  "version": "26.11.9-Beta",
+  "version": "26.11.22-Beta",
   "description": "Local Electron Music Player with ID3/LRC/MusicBrainz integration",
   "author": "sunji621 <sunjin1597532012@163.com>",
   "license": "GPL-3.0",
@@ -28,7 +28,8 @@
       "lan-server.js",
       "index.html",
       "mpv-engine.js",
-      "default_cover.png"
+      "default_cover.png",
+      "db.js"
     ],
     "extraResources": [
       {
@@ -83,7 +84,8 @@
     "jsdom": "^30.0.1",
     "music-metadata": "^10.6.0",
     "opencc-js": "^1.4.2",
-    "qrcode": "^1.5.4"
+    "qrcode": "^1.5.4",
+    "sql.js": "^1.13.0"
   },
   "devDependencies": {
     "electron": "^33.0.0",
